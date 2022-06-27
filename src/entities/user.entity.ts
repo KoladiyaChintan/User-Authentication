@@ -35,9 +35,6 @@ export class Login extends Model<Login> {
     @Column({
         type: DataType.STRING,
         allowNull: false,
-        validate: {
-            isEmail: true,
-        }
     })
     email: string;
 

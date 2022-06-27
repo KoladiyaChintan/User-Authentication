@@ -16,25 +16,18 @@ exports.PasswordController = void 0;
 const common_1 = require("@nestjs/common");
 const changepassword_dto_1 = require("./dto/changepassword.dto");
 const password_service_1 = require("./password.service");
-const update_profile_dto_1 = require("./dto/update-profile.dto");
 let PasswordController = class PasswordController {
     constructor(passwordService) {
         this.passwordService = passwordService;
     }
-    async changePassword(password, req) {
-        return await this.passwordService.changePassword(password, req);
+    async changePassword(changepasswordDto, req) {
+        return await this.passwordService.changePassword(changepasswordDto, req);
     }
     async forgotPassword(mailDto) {
         return await this.passwordService.forgotPassword(mailDto);
     }
     async resetpassword(token, resetpasswordDto) {
         return await this.passwordService.resetpassword(token, resetpasswordDto);
-    }
-    async getProfile(req) {
-        return await this.passwordService.getProfile(req);
-    }
-    async updateProfile(updateProfileDto, req) {
-        return await this.passwordService.updateProfile(updateProfileDto, req);
     }
 };
 __decorate([
@@ -60,21 +53,6 @@ __decorate([
     __metadata("design:paramtypes", [String, changepassword_dto_1.resetPasswordDto]),
     __metadata("design:returntype", Promise)
 ], PasswordController.prototype, "resetpassword", null);
-__decorate([
-    (0, common_1.Get)('getprofile'),
-    __param(0, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], PasswordController.prototype, "getProfile", null);
-__decorate([
-    (0, common_1.Put)('updateprofile'),
-    __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [update_profile_dto_1.UpdateProfileDto, Object]),
-    __metadata("design:returntype", Promise)
-], PasswordController.prototype, "updateProfile", null);
 PasswordController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [password_service_1.PasswordService])

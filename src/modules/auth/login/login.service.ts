@@ -10,24 +10,25 @@ export class LoginService {
     constructor(@Inject('USER_REPOSITORY')
     private readonly USER_REPOSITORY: typeof Login) { }
 
-    /** Validate User  */
+    /**
+     * validate user 
+     * @param loginDto 
+     * @returns 
+     */
     async validateUser(loginDto: LoginUserDto): Promise<any> {
 
-        /** Check User Email */
         const user: Login = await this.USER_REPOSITORY.findOne({ where: { email: loginDto.email } });
         if (!user) {
             throw new BadRequestException('invalid Email');
         }
 
-        /** check password */
         console.log(await bcrypt.compare(loginDto.password, user.password));
 
         if (await bcrypt.compare(loginDto.password, user.password)) {
         } else {
-            return "Invalid password";
+            throw new BadRequestException('invalid password');
         }
 
-        /** generate jwt token from id */
         const jwtToken = await jwt.sign({ id: user.id }, process.env.JWT_SECRET);
         console.log(jwtToken);
         return { 'JwtToken': jwtToken }

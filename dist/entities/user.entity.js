@@ -48,9 +48,6 @@ __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
         allowNull: false,
-        validate: {
-            isEmail: true,
-        }
     }),
     __metadata("design:type", String)
 ], Login.prototype, "email", void 0);

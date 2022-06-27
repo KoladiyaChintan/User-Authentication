@@ -8,23 +8,29 @@ import *as nodemailer from 'nodemailer';
 import * as random from 'random-token';
 import { resetpassword } from '../../../entities/reset-password.entity';
 import * as dotenv from 'dotenv';
-import { UpdateProfileDto } from './dto/update-profile.dto';
 
 dotenv.config();
 
 @Injectable()
 export class PasswordService {
-    constructor(@Inject('USER_REPOSITORY') private readonly USER_REPOSITORY: typeof Login,
+    constructor(
+        @Inject('USER_REPOSITORY') private readonly USER_REPOSITORY: typeof Login,
         @Inject('PASS_RESET_REPOSITORY') private readonly PASS_RESET_REPOSITORY: typeof resetpassword,
         private readonly passwordHelper: PasswordHelper) { }
 
+    /**
+     * change password 
+     * @param chnagepasswordDto 
+     * @param req 
+     * @returns 
+     */
     async changePassword(chnagepasswordDto: ChangePasswordDto, req: Request): Promise<any> {
         const currentPassword = chnagepasswordDto.currentpassword;
         const newpassword = chnagepasswordDto.newpassword;
 
         const bearerHeader = req.headers.authorization.replace('Bearer ', '');
-
         const jwtData = jwt.verify(bearerHeader, process.env.JWT_SECRET)
+
         const oldUser = await this.USER_REPOSITORY.findOne({ where: { id: jwtData["id"] } })
         try {
             if (await this.passwordHelper.compare(currentPassword, oldUser.password)) {
@@ -39,6 +45,11 @@ export class PasswordService {
         }
     }
 
+    /**
+     * forgot password mail sent  
+     * @param mailDto 
+     * @returns 
+     */
     async forgotPassword(mailDto) {
         const email = mailDto.email;
         const user = await this.USER_REPOSITORY.findOne({ where: { email } })
@@ -85,6 +96,12 @@ export class PasswordService {
         }
     }
 
+    /**
+     * reset password 
+     * @param token 
+     * @param resetpasswordDto 
+     * @returns 
+     */
     async resetpassword(token: string, resetpasswordDto: resetPasswordDto): Promise<any> {
         console.log(token)
         const user = await this.PASS_RESET_REPOSITORY.findOne({ where: { random_Token: token } })
@@ -104,36 +121,5 @@ export class PasswordService {
         else {
             return { massage: 'ACCOUNT NOT FOUND' }
         }
-    }
-
-    async getProfile(req) {
-
-        const bearerHeader = req.headers.authorization.replace('Bearer', '');
-        const jwtData = jwt.verify(bearerHeader, process.env.JWT_SECRET)
-
-        console.log("data", jwtData);
-
-        const getProfile = await this.USER_REPOSITORY.findOne({ attributes: ["id", "first_name", "last_name", "user_name", "email", "password"], where: { id: jwtData["id"] } })
-        try {
-            if (getProfile) {
-                return { profile: getProfile }
-            }
-        } catch (err) {
-            return err;
-        }
-    }
-
-    async updateProfile(updateProfileDto: UpdateProfileDto, req) {
-
-        const bearerHeader = req.headers.authorization.replace('Bearer', '')
-        const jwtData = jwt.verify(bearerHeader, process.env.JWT_SECRET)
-
-        const update = await this.USER_REPOSITORY.update({
-            first_name: updateProfileDto.first_name,
-            last_name: updateProfileDto.last_name,
-            user_name: updateProfileDto.user_name,
-        }, { where: { id: jwtData["id"] } });
-
-        return { massage: "Profile updated successfully" }
     }
 }

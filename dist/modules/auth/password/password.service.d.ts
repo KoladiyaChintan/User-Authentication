@@ -3,7 +3,6 @@ import { Login } from 'src/entities/user.entity';
 import { PasswordHelper } from 'src/utils/password.helper';
 import { Request } from 'express';
 import { resetpassword } from '../../../entities/reset-password.entity';
-import { UpdateProfileDto } from './dto/update-profile.dto';
 export declare class PasswordService {
     private readonly USER_REPOSITORY;
     private readonly PASS_RESET_REPOSITORY;
@@ -14,8 +13,4 @@ export declare class PasswordService {
         message: string;
     }>;
     resetpassword(token: string, resetpasswordDto: resetPasswordDto): Promise<any>;
-    getProfile(req: any): Promise<any>;
-    updateProfile(updateProfileDto: UpdateProfileDto, req: any): Promise<{
-        massage: string;
-    }>;
 }

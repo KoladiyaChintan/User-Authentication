@@ -11,7 +11,13 @@ const common_1 = require("@nestjs/common");
 const user_module_1 = require("./modules/user/user.module");
 const auth_module_1 = require("./modules/auth/auth.module");
 const database_module_1 = require("./core/database/database.module");
+const logger_middleware_1 = require("./middleware/logger.middleware");
 let AppModule = class AppModule {
+    configure(consumer) {
+        consumer
+            .apply(logger_middleware_1.Loggermiddleware)
+            .forRoutes('login');
+    }
 };
 AppModule = __decorate([
     (0, common_1.Module)({

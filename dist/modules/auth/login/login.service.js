@@ -29,7 +29,7 @@ let LoginService = class LoginService {
         if (await bcrypt.compare(loginDto.password, user.password)) {
         }
         else {
-            return "Invalid password";
+            throw new common_1.BadRequestException('invalid password');
         }
         const jwtToken = await jwt.sign({ id: user.id }, process.env.JWT_SECRET);
         console.log(jwtToken);

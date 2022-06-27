@@ -104,30 +104,6 @@ let PasswordService = class PasswordService {
             return { massage: 'ACCOUNT NOT FOUND' };
         }
     }
-    async getProfile(req) {
-        const bearerHeader = req.headers.authorization.replace('Bearer', '');
-        const jwtData = jwt.verify(bearerHeader, process.env.JWT_SECRET);
-        console.log("data", jwtData);
-        const getProfile = await this.USER_REPOSITORY.findOne({ attributes: ["id", "first_name", "last_name", "user_name", "email", "password"], where: { id: jwtData["id"] } });
-        try {
-            if (getProfile) {
-                return { profile: getProfile };
-            }
-        }
-        catch (err) {
-            return err;
-        }
-    }
-    async updateProfile(updateProfileDto, req) {
-        const bearerHeader = req.headers.authorization.replace('Bearer', '');
-        const jwtData = jwt.verify(bearerHeader, process.env.JWT_SECRET);
-        const update = await this.USER_REPOSITORY.update({
-            first_name: updateProfileDto.first_name,
-            last_name: updateProfileDto.last_name,
-            user_name: updateProfileDto.user_name,
-        }, { where: { id: jwtData["id"] } });
-        return { massage: "Profile updated successfully" };
-    }
 };
 PasswordService = __decorate([
     (0, common_1.Injectable)(),

@@ -15,19 +15,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 let UserService = class UserService {
     constructor(USER_REPOSITORY) {
         this.USER_REPOSITORY = USER_REPOSITORY;
     }
-    async createUser(createUser) {
-        const email = createUser.email;
+    async createUser(createUserDto) {
+        const email = createUserDto.email;
         const user = await this.USER_REPOSITORY.findOne({ attributes: ['email'], where: { email } });
         if (user && user.email == email) {
             throw new common_1.ConflictException('ACCOUNT ALREADY EXISTS');
         }
-        const hashedpassword = await bcrypt.hash(createUser.password, 12);
+        const hashedpassword = await bcrypt.hash(createUserDto.password, 12);
         try {
-            const createdUser = await this.USER_REPOSITORY.create(Object.assign(Object.assign({}, createUser), { password: hashedpassword }));
+            const createdUser = await this.USER_REPOSITORY.create(Object.assign(Object.assign({}, createUserDto), { password: hashedpassword }));
             createdUser.password = undefined;
             return createdUser;
         }
@@ -35,8 +36,32 @@ let UserService = class UserService {
             return error;
         }
     }
-    async getUser() {
+    async getAllUser() {
         return await this.USER_REPOSITORY.findAll();
+    }
+    async getProfile(req) {
+        const bearerHeader = req.headers.authorization.replace('Bearer', '');
+        const jwtData = jwt.verify(bearerHeader, process.env.JWT_SECRET);
+        console.log("data", jwtData);
+        const getProfile = await this.USER_REPOSITORY.findOne({ attributes: ["id", "first_name", "last_name", "user_name", "email", "password"], where: { id: jwtData["id"] } });
+        try {
+            if (getProfile) {
+                return { profile: getProfile };
+            }
+        }
+        catch (err) {
+            return err;
+        }
+    }
+    async updateProfile(updateProfileDto, req) {
+        const bearerHeader = req.headers.authorization.replace('Bearer', '');
+        const jwtData = jwt.verify(bearerHeader, process.env.JWT_SECRET);
+        const update = await this.USER_REPOSITORY.update({
+            first_name: updateProfileDto.first_name,
+            last_name: updateProfileDto.last_name,
+            user_name: updateProfileDto.user_name,
+        }, { where: { id: jwtData["id"] } });
+        return { massage: "Profile updated successfully" };
     }
 };
 UserService = __decorate([
