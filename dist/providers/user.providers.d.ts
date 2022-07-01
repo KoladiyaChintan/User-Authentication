@@ -1,3 +1,4 @@
+import { Product } from 'src/entities/product.entity';
 import { resetpassword } from '../entities/reset-password.entity';
 import { Login } from '../entities/user.entity';
 export declare const userProvider: {
@@ -7,4 +8,8 @@ export declare const userProvider: {
 export declare const Passwordprovider: {
     provide: string;
     useValue: typeof resetpassword;
+}[];
+export declare const Productprovider: {
+    provide: string;
+    useValue: typeof Product;
 }[];

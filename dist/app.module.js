@@ -12,16 +12,15 @@ const user_module_1 = require("./modules/user/user.module");
 const auth_module_1 = require("./modules/auth/auth.module");
 const database_module_1 = require("./core/database/database.module");
 const logger_middleware_1 = require("./middleware/logger.middleware");
+const product_module_1 = require("./modules/product/product.module");
 let AppModule = class AppModule {
     configure(consumer) {
-        consumer
-            .apply(logger_middleware_1.Loggermiddleware)
-            .forRoutes('login');
+        consumer.apply(logger_middleware_1.Loggermiddleware).forRoutes('login');
     }
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [user_module_1.UserModule, auth_module_1.AuthModule, database_module_1.DatabaseModule],
+        imports: [user_module_1.UserModule, auth_module_1.AuthModule, database_module_1.DatabaseModule, product_module_1.ProductModule],
         controllers: [],
         providers: [],
     })

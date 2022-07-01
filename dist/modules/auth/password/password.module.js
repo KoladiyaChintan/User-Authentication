@@ -18,7 +18,13 @@ let PasswordModule = class PasswordModule {
 PasswordModule = __decorate([
     (0, common_1.Module)({
         controllers: [password_controller_1.PasswordController],
-        providers: [password_service_1.PasswordService, user_service_1.UserService, ...user_providers_1.userProvider, password_helper_1.PasswordHelper, ...user_providers_1.Passwordprovider]
+        providers: [
+            password_service_1.PasswordService,
+            user_service_1.UserService,
+            ...user_providers_1.userProvider,
+            password_helper_1.PasswordHelper,
+            ...user_providers_1.Passwordprovider,
+        ],
     })
 ], PasswordModule);
 exports.PasswordModule = PasswordModule;

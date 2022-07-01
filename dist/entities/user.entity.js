@@ -18,7 +18,7 @@ __decorate([
         type: sequelize_typescript_1.DataType.UUID,
         primaryKey: true,
         defaultValue: sequelize_typescript_1.DataType.UUIDV4,
-        unique: true
+        unique: true,
     }),
     __metadata("design:type", String)
 ], Login.prototype, "id", void 0);
@@ -60,7 +60,7 @@ __decorate([
 ], Login.prototype, "password", void 0);
 Login = __decorate([
     (0, sequelize_typescript_1.Table)({
-        tableName: "User"
+        tableName: 'User',
     })
 ], Login);
 exports.Login = Login;

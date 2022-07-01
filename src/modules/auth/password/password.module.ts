@@ -7,6 +7,12 @@ import { PasswordService } from './password.service';
 
 @Module({
   controllers: [PasswordController],
-  providers: [PasswordService, UserService, ...userProvider, PasswordHelper, ...Passwordprovider]
+  providers: [
+    PasswordService,
+    UserService,
+    ...userProvider,
+    PasswordHelper,
+    ...Passwordprovider,
+  ],
 })
-export class PasswordModule { }
+export class PasswordModule {}

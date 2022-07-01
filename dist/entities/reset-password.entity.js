@@ -18,14 +18,14 @@ __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => user_entity_1.Login),
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.UUID,
-        allowNull: true
+        allowNull: true,
     }),
     __metadata("design:type", String)
 ], resetpassword.prototype, "userId", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.TEXT,
-        allowNull: true
+        allowNull: true,
     }),
     __metadata("design:type", String)
 ], resetpassword.prototype, "random_Token", void 0);

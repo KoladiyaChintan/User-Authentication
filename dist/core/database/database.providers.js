@@ -2,11 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.databaseProviders = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
+const product_entity_1 = require("../../entities/product.entity");
 const reset_password_entity_1 = require("../../entities/reset-password.entity");
 const user_entity_1 = require("../../entities/user.entity");
 const constants_1 = require("../constants");
 const database_config_1 = require("./database.config");
-exports.databaseProviders = [{
+exports.databaseProviders = [
+    {
         provide: constants_1.SEQUELIZE,
         useFactory: async () => {
             let config;
@@ -24,12 +26,10 @@ exports.databaseProviders = [{
                     config = database_config_1.databaseConfig.development;
             }
             const sequelize = new sequelize_typescript_1.Sequelize(config);
-            sequelize.addModels([
-                user_entity_1.Login,
-                reset_password_entity_1.resetpassword
-            ]);
+            sequelize.addModels([user_entity_1.Login, reset_password_entity_1.resetpassword, product_entity_1.Product]);
             await sequelize.sync();
             return sequelize;
         },
-    }];
+    },
+];
 //# sourceMappingURL=database.providers.js.map

@@ -17,7 +17,7 @@ UserModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         providers: [user_service_1.UserService, ...user_providers_1.userProvider],
-        controllers: [user_controller_1.UserController]
+        controllers: [user_controller_1.UserController],
     })
 ], UserModule);
 exports.UserModule = UserModule;

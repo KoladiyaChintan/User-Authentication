@@ -31,17 +31,19 @@ let PasswordService = class PasswordService {
         const newpassword = chnagepasswordDto.newpassword;
         const bearerHeader = req.headers.authorization.replace('Bearer ', '');
         const jwtData = jwt.verify(bearerHeader, process.env.JWT_SECRET);
-        const oldUser = await this.USER_REPOSITORY.findOne({ where: { id: jwtData["id"] } });
+        const oldUser = await this.USER_REPOSITORY.findOne({
+            where: { id: jwtData['id'] },
+        });
         try {
             if (await this.passwordHelper.compare(currentPassword, oldUser.password)) {
                 const newEncPassword = await this.passwordHelper.generateSaltAndHash(newpassword);
                 const newHashPassword = newEncPassword.passwordHash;
-                await this.USER_REPOSITORY.update({ password: newHashPassword }, { where: { id: jwtData["id"] } });
-                return { massage: "Password updated successfully" };
+                await this.USER_REPOSITORY.update({ password: newHashPassword }, { where: { id: jwtData['id'] } });
+                return { massage: 'Password updated successfully' };
             }
         }
         catch (_a) {
-            return { message: "this password already exists" };
+            return { message: 'this password already exists' };
         }
     }
     async forgotPassword(mailDto) {
@@ -51,7 +53,7 @@ let PasswordService = class PasswordService {
             throw new common_1.ConflictException('ACCOUNT_NOT_FOUND');
         }
         if (user) {
-            var transporter = nodemailer.createTransport({
+            const transporter = nodemailer.createTransport({
                 service: 'yahoo',
                 host: 'smtp.mail.yahoo.com',
                 port: 465,
@@ -65,7 +67,7 @@ let PasswordService = class PasswordService {
                     rejectUnauthorized: false,
                 },
             });
-            let random_token = random(16);
+            const random_token = random(16);
             console.log(random_token);
             const mailOptions = {
                 from: process.env.USER_EMAIL,
@@ -73,9 +75,12 @@ let PasswordService = class PasswordService {
                 subject: 'Change Password',
                 html: `<h1>Change Password</h1> <a href="http://127.0.0.1:3000/resetpassword/${random_token}">Click here</a>`,
             };
-            await this.PASS_RESET_REPOSITORY.create({ userId: user.id, random_Token: random_token });
-            await transporter.sendMail(mailOptions, (err, result) => {
-                console.log("mail sent");
+            await this.PASS_RESET_REPOSITORY.create({
+                userId: user.id,
+                random_Token: random_token,
+            });
+            await transporter.sendMail(mailOptions, (err) => {
+                console.log('mail sent');
                 if (err) {
                     throw err;
                 }
@@ -83,13 +88,15 @@ let PasswordService = class PasswordService {
             return { message: `user token :- ${random_token}` };
         }
         else {
-            console.log("invalid mail");
+            console.log('invalid mail');
             return { message: 'Invalid Email' };
         }
     }
     async resetpassword(token, resetpasswordDto) {
         console.log(token);
-        const user = await this.PASS_RESET_REPOSITORY.findOne({ where: { random_Token: token } });
+        const user = await this.PASS_RESET_REPOSITORY.findOne({
+            where: { random_Token: token },
+        });
         if (user && user.random_Token == token) {
             const newPassword = resetpasswordDto.newpassword;
             console.log(newPassword);
@@ -97,7 +104,7 @@ let PasswordService = class PasswordService {
             const newHashPassword = newEncpassword.passwordHash;
             if (await this.passwordHelper.compare(newPassword, newHashPassword)) {
                 await this.USER_REPOSITORY.update({ password: newHashPassword }, { where: { id: user['userId'] } });
-                return { massage: "password update successfully" };
+                return { massage: 'password update successfully' };
             }
         }
         else {

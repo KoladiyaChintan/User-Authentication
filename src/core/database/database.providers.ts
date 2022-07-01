@@ -1,33 +1,33 @@
 import { Sequelize } from 'sequelize-typescript';
+import { Product } from 'src/entities/product.entity';
 import { resetpassword } from 'src/entities/reset-password.entity';
 import { Login } from 'src/entities/user.entity';
 import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../constants';
 import { databaseConfig } from './database.config';
 
-export const databaseProviders = [{
-   provide: SEQUELIZE,
-   useFactory: async () => {
+export const databaseProviders = [
+  {
+    provide: SEQUELIZE,
+    useFactory: async () => {
       let config;
       switch (process.env.NODE_ENV) {
-         case DEVELOPMENT:
-            config = databaseConfig.development;
-            break;
-         case TEST:
-            config = databaseConfig.test;
-            break;
-         case PRODUCTION:
-            config = databaseConfig.production;
-            break;
-         default:
-            config = databaseConfig.development;
+        case DEVELOPMENT:
+          config = databaseConfig.development;
+          break;
+        case TEST:
+          config = databaseConfig.test;
+          break;
+        case PRODUCTION:
+          config = databaseConfig.production;
+          break;
+        default:
+          config = databaseConfig.development;
       }
       const sequelize = new Sequelize(config);
-      sequelize.addModels([
-         Login,
-         resetpassword
-      ]);
+      sequelize.addModels([Login, resetpassword, Product]);
       await sequelize.sync();
       // await sequelize.sync({force:true});
       return sequelize;
-   },
-}];
+    },
+  },
+];

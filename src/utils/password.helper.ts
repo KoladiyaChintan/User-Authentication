@@ -1,56 +1,76 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 import { genSalt, hash, compare } from 'bcrypt';
+import { Product } from 'src/entities/product.entity';
+import * as jwt from 'jsonwebtoken';
 
 export interface help {
-    salt: string;
-    passwordHash: string;
+  salt: string;
+  passwordHash: string;
 }
 
 const saltRounds = 10;
 @Injectable()
 export class PasswordHelper {
+  public compare(
+    plainPassword: string,
+    passwordhash: string,
+  ): Promise<object | boolean> {
+    return new Promise((resolve, reject) => {
+      compare(plainPassword, passwordhash, (err, res) => {
+        if (res) {
+          resolve(true);
+        } else {
+          reject(err);
+        }
+      });
+    });
+  }
+  public async generateSaltAndHash(userPassword: string): Promise<help> {
+    const salt: string = (await this.generateSalt()) as string;
+    /** Gives us salt of length 16 */
+    const passwordHash: string = (await this.hash(
+      userPassword,
+      salt,
+    )) as string;
+    return {
+      salt,
+      passwordHash,
+    };
+  }
+  public generateSalt(round: number = saltRounds): Promise<string | null> {
+    return new Promise((resolve) => {
+      genSalt(round, (err, salt) => {
+        if (!err) {
+          resolve(salt);
+        } else {
+          resolve(null);
+        }
+      });
+    });
+  }
+  public hash(plainPassword: string, salt: string): Promise<string> {
+    return new Promise((resolve) => {
+      hash(plainPassword, salt, (err, hash) => {
+        if (err) {
+          resolve(null);
+        }
+        resolve(hash);
+      });
+    });
+  }
 
-    public compare(plainPassword: string, passwordhash: string): Promise<object | boolean> {
-        return new Promise((resolve, reject) => {
-            compare(plainPassword, passwordhash, (err, res) => {
-                if (res) {
-                    resolve(true);
-                } else {
-                    reject(err);
-                }
-            });
-        });
+  public getTokenFromHeader(request: Request): string {
+    let token =
+      request.headers['x-access-token'] || request.headers['authorization'];
+
+    if (Array.isArray(token)) {
+      token = token[0];
     }
-    public async generateSaltAndHash(userPassword: string): Promise<help> {
-        const salt: string = (await this.generateSalt()) as string;
-        /** Gives us salt of length 16 */
-        const passwordHash: string = (await this.hash(userPassword, salt)) as string;
-        return {
-            salt,
-            passwordHash,
-        };
+
+    if (token && token.startsWith('Bearer ')) {
+      // Remove Bearer from string
+      return (token = token.slice(7, token.length));
     }
-    public generateSalt(round: number = saltRounds): Promise<string | null> {
-        return new Promise((resolve) => {
-            genSalt(round, (err, salt) => {
-                if (!err) {
-                    resolve(salt);
-                } else {
-                    resolve(null);
-                }
-            });
-        });
-    }
-    public hash(plainPassword: string, salt: string): Promise<string> {
-        return new Promise((resolve) => {
-            hash(plainPassword, salt, (err, hash) => {
-                if (err) {
-                    resolve(null);
-                }
-                resolve(hash);
-            });
-        });
-    }
+    return token;
+  }
 }
-
-

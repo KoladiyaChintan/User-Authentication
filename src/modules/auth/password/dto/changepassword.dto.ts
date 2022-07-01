@@ -1,22 +1,20 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class ChangePasswordDto {
+  @IsNotEmpty()
+  currentpassword: string;
 
-    @IsNotEmpty()
-    currentpassword: string;
-
-    @IsNotEmpty()
-    newpassword: string;
-
+  @IsNotEmpty()
+  newpassword: string;
 }
 
 export class mailDto {
-    @IsNotEmpty()
-    @IsEmail()
-    email: string;
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
 }
 
 export class resetPasswordDto {
-    @IsNotEmpty()
-    newpassword: string;
+  @IsNotEmpty()
+  newpassword: string;
 }

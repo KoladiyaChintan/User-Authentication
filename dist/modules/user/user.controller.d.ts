@@ -2,7 +2,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { Login } from '../../entities/user.entity';
 import { UserService } from './user.service';
 import { UpdateProfileDto } from '../auth/password/dto/update-profile.dto';
-import { Request } from "express";
+import { Request } from 'express';
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
