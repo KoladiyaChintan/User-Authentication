@@ -24,9 +24,9 @@ export const databaseProviders = [
           config = databaseConfig.development;
       }
       const sequelize = new Sequelize(config);
-      sequelize.addModels([Login, resetpassword, Product]);
+      sequelize.addModels([resetpassword, Product, Login]);
       await sequelize.sync();
-      // await sequelize.sync({force:true});
+      // await sequelize.sync({ force: true });
       return sequelize;
     },
   },

@@ -14,7 +14,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductController = void 0;
 const common_1 = require("@nestjs/common");
-const user_decorator_1 = require("../../decorators/user.decorator");
 const product_interceptor_1 = require("../../dispatcher/product.interceptor");
 const admin_guard_1 = require("../../guard/admin.guard");
 const product_dto_1 = require("./dto/product.dto");
@@ -35,7 +34,7 @@ __decorate([
     (0, common_1.UseInterceptors)(product_interceptor_1.ProductInterceptor),
     (0, common_1.UseGuards)(admin_guard_1.AdminGuard),
     (0, common_1.Post)('add'),
-    __param(0, (0, user_decorator_1.User)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [product_dto_1.ProductDto]),
     __metadata("design:returntype", Promise)

@@ -26,7 +26,7 @@ exports.databaseProviders = [
                     config = database_config_1.databaseConfig.development;
             }
             const sequelize = new sequelize_typescript_1.Sequelize(config);
-            sequelize.addModels([user_entity_1.Login, reset_password_entity_1.resetpassword, product_entity_1.Product]);
+            sequelize.addModels([reset_password_entity_1.resetpassword, product_entity_1.Product, user_entity_1.Login]);
             await sequelize.sync();
             return sequelize;
         },
