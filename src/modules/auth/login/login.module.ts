@@ -6,6 +6,6 @@ import { LoginService } from './login.service';
 
 @Module({
   controllers: [LoginController],
-  providers: [LoginService,...userProvider , UserService],
+  providers: [LoginService, ...userProvider, UserService],
 })
-export class LoginModule { }
+export class LoginModule {}

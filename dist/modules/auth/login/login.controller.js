@@ -20,16 +20,18 @@ let LoginController = class LoginController {
     constructor(loginService) {
         this.loginService = loginService;
     }
-    async ValidateUser(loginDto) {
+    async ValidateUser(loginDto, res) {
         const data = await this.loginService.validateUser(loginDto);
-        return data;
+        res.cookie('auth-cookie', data, { httpOnly: true });
+        return { massage: 'success' };
     }
 };
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_dto_1.LoginUserDto]),
+    __metadata("design:paramtypes", [login_dto_1.LoginUserDto, Object]),
     __metadata("design:returntype", Promise)
 ], LoginController.prototype, "ValidateUser", null);
 LoginController = __decorate([

@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { genSalt, hash, compare } from 'bcrypt';
-import { Product } from 'src/entities/product.entity';
-import * as jwt from 'jsonwebtoken';
 
 export interface help {
   salt: string;

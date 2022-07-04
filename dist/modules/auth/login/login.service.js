@@ -21,7 +21,9 @@ let LoginService = class LoginService {
         this.USER_REPOSITORY = USER_REPOSITORY;
     }
     async validateUser(loginDto) {
-        const user = await this.USER_REPOSITORY.findOne({ where: { email: loginDto.email } });
+        const user = await this.USER_REPOSITORY.findOne({
+            where: { email: loginDto.email },
+        });
         if (!user) {
             throw new common_1.BadRequestException('invalid Email');
         }
@@ -33,7 +35,7 @@ let LoginService = class LoginService {
         }
         const jwtToken = await jwt.sign({ id: user.id }, process.env.JWT_SECRET);
         console.log(jwtToken);
-        return { 'JwtToken': jwtToken };
+        return jwtToken;
     }
 };
 LoginService = __decorate([
