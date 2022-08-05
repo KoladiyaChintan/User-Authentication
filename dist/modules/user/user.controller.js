@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const user_service_1 = require("./user.service");
 const update_profile_dto_1 = require("../auth/password/dto/update-profile.dto");
+const swagger_1 = require("@nestjs/swagger");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -35,6 +36,8 @@ let UserController = class UserController {
     }
 };
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'create new user' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Success' }),
     (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -42,12 +45,16 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "createUser", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'get all users' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Success' }),
     (0, common_1.Get)('getall'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getAllUser", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'get user profile' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Success' }),
     (0, common_1.Get)('getprofile'),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -55,6 +62,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getProfile", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: ' update user profile' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Success' }),
     (0, common_1.Put)('updateprofile'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
@@ -64,6 +73,7 @@ __decorate([
 ], UserController.prototype, "updateProfile", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
+    (0, swagger_1.ApiTags)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 exports.UserController = UserController;

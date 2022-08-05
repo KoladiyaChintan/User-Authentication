@@ -8,7 +8,8 @@ import * as jwt from 'jsonwebtoken';
 @Injectable()
 export class UserService {
   constructor(
-    @Inject('USER_REPOSITORY') private readonly USER_REPOSITORY: typeof Login,
+    @Inject('USER_REPOSITORY')
+    private readonly USER_REPOSITORY: typeof Login,
   ) {}
 
   /**

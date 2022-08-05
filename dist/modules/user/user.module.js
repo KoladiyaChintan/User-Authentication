@@ -11,12 +11,12 @@ const common_1 = require("@nestjs/common");
 const user_controller_1 = require("./user.controller");
 const user_providers_1 = require("../../providers/user.providers");
 const user_service_1 = require("./user.service");
+const jwt_helper_1 = require("../../utils/jwt.helper");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
-        providers: [user_service_1.UserService, ...user_providers_1.userProvider],
+        providers: [user_service_1.UserService, ...user_providers_1.userProvider, jwt_helper_1.JwtHelper],
         controllers: [user_controller_1.UserController],
     })
 ], UserModule);

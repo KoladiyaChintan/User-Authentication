@@ -13,6 +13,7 @@ const user_service_1 = require("../../user/user.service");
 const password_helper_1 = require("../../../utils/password.helper");
 const password_controller_1 = require("./password.controller");
 const password_service_1 = require("./password.service");
+const jwt_helper_1 = require("../../../utils/jwt.helper");
 let PasswordModule = class PasswordModule {
 };
 PasswordModule = __decorate([
@@ -24,6 +25,7 @@ PasswordModule = __decorate([
             ...user_providers_1.userProvider,
             password_helper_1.PasswordHelper,
             ...user_providers_1.Passwordprovider,
+            jwt_helper_1.JwtHelper,
         ],
     })
 ], PasswordModule);

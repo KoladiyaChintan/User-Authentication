@@ -4,17 +4,16 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PasswordHelper } from 'src/utils/password.helper';
-import * as jwt from 'jsonwebtoken';
+import { JwtHelper } from 'src/utils/jwt.helper';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
-  constructor(private readonly jwtToken: PasswordHelper) {}
+  constructor(private readonly jwtHelper: JwtHelper) {}
 
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
 
-    const token = this.jwtToken.getTokenFromHeader(request);
+    const token = await this.jwtHelper.getTokenFromHeader(request);
 
     if (!token) {
       throw new UnauthorizedException({
@@ -23,7 +22,7 @@ export class AdminGuard implements CanActivate {
       });
     }
 
-    const user = await jwt.verify(token, process.env.JWT_SECRET);
+    const user = await this.jwtHelper.verify(token);
 
     if (!user) {
       throw new UnauthorizedException({

@@ -1,32 +1,44 @@
 import { Sequelize } from 'sequelize-typescript';
+import { LoginSession } from 'src/entities/login-session.entity';
 import { Product } from 'src/entities/product.entity';
 import { resetpassword } from 'src/entities/reset-password.entity';
 import { Login } from 'src/entities/user.entity';
-import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../constants';
-import { databaseConfig } from './database.config';
+// import DatabaseSeeder from './seeder/index';
 
 export const databaseProviders = [
   {
-    provide: SEQUELIZE,
+    provide: 'SEQUELIZE',
     useFactory: async () => {
-      let config;
-      switch (process.env.NODE_ENV) {
-        case DEVELOPMENT:
-          config = databaseConfig.development;
-          break;
-        case TEST:
-          config = databaseConfig.test;
-          break;
-        case PRODUCTION:
-          config = databaseConfig.production;
-          break;
-        default:
-          config = databaseConfig.development;
-      }
-      const sequelize = new Sequelize(config);
-      sequelize.addModels([resetpassword, Product, Login]);
-      await sequelize.sync();
-      // await sequelize.sync({ force: true });
+      const sequelize = new Sequelize({
+        dialect: 'postgres',
+        host: process.env.DB_HOST,
+        port: +process.env.DB_PORT,
+        password: process.env.DB_PASS,
+        username: process.env.DB_USER,
+        database: process.env.DATABASE_NAME,
+        logging: false,
+        pool: {
+          max: 100,
+          min: 0,
+          acquire: 30000,
+          idle: 5000,
+        },
+      });
+
+      sequelize.addModels([Login, resetpassword, Product, LoginSession]);
+
+      await sequelize.sync({ force: true });
+      //   .then(async () => {
+      //     return await DatabaseSeeder.run();
+      //   })
+      //   .then(() => {
+      //     console.log('********** Successfully seeded db **********');
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //     console.log('********** Error in database sedding **********');
+      //   });
+
       return sequelize;
     },
   },

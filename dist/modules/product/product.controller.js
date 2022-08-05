@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const product_interceptor_1 = require("../../dispatcher/product.interceptor");
 const admin_guard_1 = require("../../guard/admin.guard");
 const product_dto_1 = require("./dto/product.dto");
@@ -33,6 +34,8 @@ let ProductController = class ProductController {
 __decorate([
     (0, common_1.UseInterceptors)(product_interceptor_1.ProductInterceptor),
     (0, common_1.UseGuards)(admin_guard_1.AdminGuard),
+    (0, swagger_1.ApiOperation)({ summary: 'add product' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Success' }),
     (0, common_1.Post)('add'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -40,6 +43,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "add", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'get all products' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Success' }),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -47,6 +52,7 @@ __decorate([
 ], ProductController.prototype, "get", null);
 ProductController = __decorate([
     (0, common_1.Controller)('product'),
+    (0, swagger_1.ApiTags)('product'),
     __metadata("design:paramtypes", [product_service_1.ProductService])
 ], ProductController);
 exports.ProductController = ProductController;

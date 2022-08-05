@@ -15,10 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginService = void 0;
 const common_1 = require("@nestjs/common");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const jwt_helper_1 = require("../../../utils/jwt.helper");
 let LoginService = class LoginService {
-    constructor(USER_REPOSITORY) {
+    constructor(USER_REPOSITORY, LOGIN_SESSION, jwtHelper) {
         this.USER_REPOSITORY = USER_REPOSITORY;
+        this.LOGIN_SESSION = LOGIN_SESSION;
+        this.jwtHelper = jwtHelper;
     }
     async validateUser(loginDto) {
         const user = await this.USER_REPOSITORY.findOne({
@@ -33,7 +35,16 @@ let LoginService = class LoginService {
         else {
             throw new common_1.BadRequestException('invalid password');
         }
-        const jwtToken = await jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+        const TokenDto = {
+            id: user.id,
+            email: user.email,
+        };
+        const jwtToken = await this.jwtHelper.generateToken(TokenDto);
+        await this.LOGIN_SESSION.create({
+            user_id: user.id,
+            jwttoken: jwtToken,
+            email: user.email,
+        });
         console.log(jwtToken);
         return jwtToken;
     }
@@ -41,7 +52,8 @@ let LoginService = class LoginService {
 LoginService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)('USER_REPOSITORY')),
-    __metadata("design:paramtypes", [Object])
+    __param(1, (0, common_1.Inject)('LOGIN_SESSION')),
+    __metadata("design:paramtypes", [Object, Object, jwt_helper_1.JwtHelper])
 ], LoginService);
 exports.LoginService = LoginService;
 //# sourceMappingURL=login.service.js.map

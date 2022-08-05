@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductModule = void 0;
 const common_1 = require("@nestjs/common");
 const user_providers_1 = require("../../providers/user.providers");
+const jwt_helper_1 = require("../../utils/jwt.helper");
 const password_helper_1 = require("../../utils/password.helper");
 const product_controller_1 = require("./product.controller");
 const product_service_1 = require("./product.service");
@@ -17,7 +18,7 @@ let ProductModule = class ProductModule {
 ProductModule = __decorate([
     (0, common_1.Module)({
         controllers: [product_controller_1.ProductController],
-        providers: [product_service_1.ProductService, ...user_providers_1.Productprovider, password_helper_1.PasswordHelper],
+        providers: [product_service_1.ProductService, ...user_providers_1.Productprovider, password_helper_1.PasswordHelper, jwt_helper_1.JwtHelper],
     })
 ], ProductModule);
 exports.ProductModule = ProductModule;

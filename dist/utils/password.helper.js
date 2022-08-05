@@ -53,16 +53,6 @@ let PasswordHelper = class PasswordHelper {
             });
         });
     }
-    getTokenFromHeader(request) {
-        let token = request.headers['x-access-token'] || request.headers['authorization'];
-        if (Array.isArray(token)) {
-            token = token[0];
-        }
-        if (token && token.startsWith('Bearer ')) {
-            return (token = token.slice(7, token.length));
-        }
-        return token;
-    }
 };
 PasswordHelper = __decorate([
     (0, common_1.Injectable)()

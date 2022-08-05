@@ -11,22 +11,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminGuard = void 0;
 const common_1 = require("@nestjs/common");
-const password_helper_1 = require("../utils/password.helper");
-const jwt = require("jsonwebtoken");
+const jwt_helper_1 = require("../utils/jwt.helper");
 let AdminGuard = class AdminGuard {
-    constructor(jwtToken) {
-        this.jwtToken = jwtToken;
+    constructor(jwtHelper) {
+        this.jwtHelper = jwtHelper;
     }
     async canActivate(context) {
         const request = context.switchToHttp().getRequest();
-        const token = this.jwtToken.getTokenFromHeader(request);
+        const token = await this.jwtHelper.getTokenFromHeader(request);
         if (!token) {
             throw new common_1.UnauthorizedException({
                 isError: true,
                 message: 'Login required',
             });
         }
-        const user = await jwt.verify(token, process.env.JWT_SECRET);
+        const user = await this.jwtHelper.verify(token);
         if (!user) {
             throw new common_1.UnauthorizedException({
                 isError: true,
@@ -39,7 +38,7 @@ let AdminGuard = class AdminGuard {
 };
 AdminGuard = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [password_helper_1.PasswordHelper])
+    __metadata("design:paramtypes", [jwt_helper_1.JwtHelper])
 ], AdminGuard);
 exports.AdminGuard = AdminGuard;
 //# sourceMappingURL=admin.guard.js.map

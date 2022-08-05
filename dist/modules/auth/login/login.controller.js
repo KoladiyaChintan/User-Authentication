@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const login_dto_1 = require("./dto/login.dto");
 const login_service_1 = require("./login.service");
 let LoginController = class LoginController {
@@ -27,6 +28,8 @@ let LoginController = class LoginController {
     }
 };
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'validate user' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Success' }),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)({ passthrough: true })),
@@ -36,6 +39,7 @@ __decorate([
 ], LoginController.prototype, "ValidateUser", null);
 LoginController = __decorate([
     (0, common_1.Controller)('login'),
+    (0, swagger_1.ApiTags)('login'),
     __metadata("design:paramtypes", [login_service_1.LoginService])
 ], LoginController);
 exports.LoginController = LoginController;

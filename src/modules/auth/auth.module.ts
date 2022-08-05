@@ -6,6 +6,5 @@ import { PasswordModule } from './password/password.module';
   controllers: [],
   providers: [],
   imports: [LoginModule, PasswordModule],
-
 })
-export class AuthModule { }
+export class AuthModule {}

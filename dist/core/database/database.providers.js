@@ -2,32 +2,31 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.databaseProviders = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
+const login_session_entity_1 = require("../../entities/login-session.entity");
 const product_entity_1 = require("../../entities/product.entity");
 const reset_password_entity_1 = require("../../entities/reset-password.entity");
 const user_entity_1 = require("../../entities/user.entity");
-const constants_1 = require("../constants");
-const database_config_1 = require("./database.config");
 exports.databaseProviders = [
     {
-        provide: constants_1.SEQUELIZE,
+        provide: 'SEQUELIZE',
         useFactory: async () => {
-            let config;
-            switch (process.env.NODE_ENV) {
-                case constants_1.DEVELOPMENT:
-                    config = database_config_1.databaseConfig.development;
-                    break;
-                case constants_1.TEST:
-                    config = database_config_1.databaseConfig.test;
-                    break;
-                case constants_1.PRODUCTION:
-                    config = database_config_1.databaseConfig.production;
-                    break;
-                default:
-                    config = database_config_1.databaseConfig.development;
-            }
-            const sequelize = new sequelize_typescript_1.Sequelize(config);
-            sequelize.addModels([reset_password_entity_1.resetpassword, product_entity_1.Product, user_entity_1.Login]);
-            await sequelize.sync();
+            const sequelize = new sequelize_typescript_1.Sequelize({
+                dialect: 'postgres',
+                host: process.env.DB_HOST,
+                port: +process.env.DB_PORT,
+                password: process.env.DB_PASS,
+                username: process.env.DB_USER,
+                database: process.env.DATABASE_NAME,
+                logging: false,
+                pool: {
+                    max: 100,
+                    min: 0,
+                    acquire: 30000,
+                    idle: 5000,
+                },
+            });
+            sequelize.addModels([user_entity_1.Login, reset_password_entity_1.resetpassword, product_entity_1.Product, login_session_entity_1.LoginSession]);
+            await sequelize.sync({ force: true });
             return sequelize;
         },
     },

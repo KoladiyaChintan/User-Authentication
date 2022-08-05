@@ -16,6 +16,7 @@ exports.PasswordController = void 0;
 const common_1 = require("@nestjs/common");
 const changepassword_dto_1 = require("./dto/changepassword.dto");
 const password_service_1 = require("./password.service");
+const swagger_1 = require("@nestjs/swagger");
 let PasswordController = class PasswordController {
     constructor(passwordService) {
         this.passwordService = passwordService;
@@ -23,14 +24,16 @@ let PasswordController = class PasswordController {
     async changePassword(changepasswordDto, req) {
         return await this.passwordService.changePassword(changepasswordDto, req);
     }
-    async forgotPassword(mailDto) {
-        return await this.passwordService.forgotPassword(mailDto);
+    async forgotPassword(maildto) {
+        return await this.passwordService.forgotPassword(maildto);
     }
     async resetpassword(token, resetpasswordDto) {
         return await this.passwordService.resetpassword(token, resetpasswordDto);
     }
 };
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'change password' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Success' }),
     (0, common_1.Put)('changepassword'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
@@ -39,6 +42,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PasswordController.prototype, "changePassword", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'forgot password mail sent' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Success' }),
     (0, common_1.Post)('forgotpassword'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -46,6 +51,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PasswordController.prototype, "forgotPassword", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'reset password' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Success' }),
     (0, common_1.Post)('resetpassword/:token'),
     __param(0, (0, common_1.Param)('token')),
     __param(1, (0, common_1.Body)()),
@@ -55,6 +62,7 @@ __decorate([
 ], PasswordController.prototype, "resetpassword", null);
 PasswordController = __decorate([
     (0, common_1.Controller)(),
+    (0, swagger_1.ApiTags)('password'),
     __metadata("design:paramtypes", [password_service_1.PasswordService])
 ], PasswordController);
 exports.PasswordController = PasswordController;

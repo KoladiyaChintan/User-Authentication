@@ -56,19 +56,4 @@ export class PasswordHelper {
       });
     });
   }
-
-  public getTokenFromHeader(request: Request): string {
-    let token =
-      request.headers['x-access-token'] || request.headers['authorization'];
-
-    if (Array.isArray(token)) {
-      token = token[0];
-    }
-
-    if (token && token.startsWith('Bearer ')) {
-      // Remove Bearer from string
-      return (token = token.slice(7, token.length));
-    }
-    return token;
-  }
 }
